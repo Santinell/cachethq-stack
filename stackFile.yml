@@ -13,7 +13,6 @@ services:
     deployTo:
       - cachethq
 
-
   - name: cachethq
     type: docker
     image: cachethq/docker
@@ -28,6 +27,21 @@ services:
       DB_USERNAME: "{{=service('db').get('database')}}"
       DB_PASSWORD: "{{=service('db').get('userPassword')}}"
       APP_KEY: "{{=randomString(32)}}"
+    deployTo:
+      - cachethq
+      
+  - name: cachet-monitor
+    type: docker
+    image: alpine
+    version: lateset
+    ports:
+      - 3000
+    remoteAccess: false
+    buildCommands: wget https://github.com/CastawayLabs/cachet-monitor/releases/download/v3.0/cachet_monitor_linux_amd64
+    startCommand: cachet_monitor_linux_amd64 -c /etc/cachet-monitor.yaml
+    configFiles:
+      - dest: /etc/cachet-monitor.yaml
+        src: ./configs/cachet-monitor.yaml
     deployTo:
       - cachethq
 
