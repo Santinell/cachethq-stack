@@ -33,7 +33,7 @@ services:
   - name: cachet-monitor
     type: docker
     image: alpine
-    version: lateset
+    version: latest
     ports:
       - 3000
     remoteAccess: false
